@@ -1,6 +1,6 @@
 var hunters = [];
 var d = -0.25;
-var difficulty = 0.008;
+var difficulty = 0.005;
 var currentR = 5;
 var growth = 0.6;
 var respawn = true;
