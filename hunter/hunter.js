@@ -14,7 +14,10 @@ Hunter.prototype.update = function(){
 
 Hunter.prototype.display = function(){
     fill(this.c[0],this.c[1],this.c[2])
-    ellipse(this.position.x,this.position.y,this.r*2,this.r*2);    
+    ellipse(this.position.x,this.position.y,this.r*2,this.r*2);
+    if(showNums === true){
+        textSize(this.r/2);
+        text(round(this.r),this.position.x-this.r/2,this.position.y+this.r/2);
 };
 
 Hunter.prototype.applyForce = function(f){
