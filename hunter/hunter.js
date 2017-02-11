@@ -19,6 +19,7 @@ Hunter.prototype.display = function(){
         textSize(this.r/2);
         fill(255);
         text(round(this.r),this.position.x-this.r/2,this.position.y+this.r/2);
+    }
 };
 
 Hunter.prototype.applyForce = function(f){
