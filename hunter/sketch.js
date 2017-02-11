@@ -16,6 +16,7 @@ var huntX;
 var huntY;
 var decoyX;
 var decoyY;
+var showNums = false;
 var goFinal = false;
 
 function setup() {
@@ -85,6 +86,10 @@ function draw() {
             goFinal = true;
             decoyX = mouseX;
             decoyY = mouseY;
+        }    
+        
+        if(keyCode === UP_ARROW){
+            showNums = true;    
         }    
     }
     
