@@ -19,7 +19,7 @@ var decoyY;
 var goFinal = false;
 
 function setup() {
-    createCanvas(700,700); 
+    createCanvas(1000,650); 
     for(var i = 0; i < numCircles; i++){
         hunters.push(new Hunter(random(20,width-20),random(20,height-20),random(currentR-2,currentR*5),random(20,230),random(20,230),random(20,230)));
     }
