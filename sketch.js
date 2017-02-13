@@ -1,5 +1,5 @@
 var hunters = [];
-var d = -100;
+var d = -0.25;
 var difficulty = 0.008;
 var currentR = 5.5;
 var growth = 0.7;
