@@ -18,6 +18,11 @@ var decoyX;
 var decoyY;
 var goFinal = false;
 var showNums = false;
+var endless = false;
+var newPos1;
+var newPos2;
+var newR;
+var paused = false;
 
 function setup() {
     createCanvas(1000,650); 
@@ -28,6 +33,7 @@ function setup() {
 
 function draw() {
     background(0);
+    
     if(decoys === false){
         huntX = mouseX;
         huntY = mouseY;
@@ -57,6 +63,9 @@ function draw() {
     text("Current Size: " + round(currentR),width-160,height-10);
     text("Andre Monteiro",10,height-30);
     text("PD: 3",10,height-10);
+    if(endless === true){
+        text("Endless",width/2-10,height-10);
+    }
     
     for(var i = hunters.length-1; i > -1; i--){
         hunters[i].update();
@@ -80,7 +89,20 @@ function draw() {
             if(currentR > hunters[i].r){
                 currentR += hunters[i].r/TWO_PI * growth;
                 hunters.splice(i,1);
-                hunters.push(new Hunter(random(20,width-20),random(20,height-20),random(4,30),random(20,255),random(20,255),random(20,255))); 
+                var go = false;
+                while(go === false){
+                    newPos1 = random(20,width-20);
+                    newPos2 = random(20,height-20);
+                    if(endless === true){
+                        newR  = random(currentR*0.5,currentR*2);
+                    } else {
+                        newR = random(3,27.5);
+                    }
+                    if(dist(mouseX,mouseY,newPos1,newPos2) > currentR + newR){
+                        go = true;
+                    }
+                }
+                hunters.push(new Hunter(newPos1,newPos2,newR,random(20,255),random(20,255),random(20,255))); 
             } else {
                 noLoop();
             }
@@ -102,6 +124,8 @@ function draw() {
             } else {
                 showNums = false;
             }
+        } else if(key == 's'){
+            endless = true;
         }
     }
     
