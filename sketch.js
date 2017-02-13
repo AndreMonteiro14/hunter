@@ -103,9 +103,6 @@ function draw() {
                 }
                 hunters.push(new Hunter(newPos1,newPos2,newR,random(20,255),random(20,255),random(20,255))); 
             } else {
-                fill(255,0,0);
-                textSize(30);
-                text("EZRA BIRD",0,0);
                 noLoop();
             }
         }
