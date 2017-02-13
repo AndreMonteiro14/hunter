@@ -25,7 +25,7 @@ var newR;
 var paused = false;
 
 function setup() {
-    createCanvas(1000,650); 
+    createCanvas(windowWidth,windowHeight); 
     for(var i = 0; i < numCircles; i++){
         hunters.push(new Hunter(random(20,width-20),random(20,height-20),random(currentR-2,currentR*5),random(20,220),random(20,220),random(20,220)));
     }
