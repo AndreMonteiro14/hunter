@@ -1,5 +1,5 @@
 var hunters = [];
-var d = -0.25;
+var d = -100;
 var difficulty = 0.008;
 var currentR = 5.5;
 var growth = 0.7;
@@ -22,7 +22,6 @@ var endless = false;
 var newPos1;
 var newPos2;
 var newR;
-var paused = false;
 
 function setup() {
     createCanvas(windowWidth,windowHeight); 
