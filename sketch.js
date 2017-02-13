@@ -84,7 +84,7 @@ function draw() {
             hunters[i].velocity.y *= -0.8;
         }
         
-        if(dist(hunters[i].position.x,hunters[i].position.y,mouseX,mouseY) < hunters[i].r+currentR){
+        if(dist(hunters[i].position.x,hunters[i].position.y,mouseX,mouseY) < (hunters[i].r+currentR)){
             if(currentR > hunters[i].r){
                 currentR += hunters[i].r/TWO_PI * growth;
                 hunters.splice(i,1);
@@ -97,7 +97,7 @@ function draw() {
                     } else {
                         newR = random(3,27.5);
                     }
-                    if(dist(mouseX,mouseY,newPos1,newPos2) > currentR + newR){
+                    if(dist(mouseX,mouseY,newPos1,newPos2) > 1.1*(currentR + newR)){
                         go = true;
                     }
                 }
