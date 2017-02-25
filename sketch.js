@@ -103,6 +103,9 @@ function draw() {
                 }
                 hunters.push(new Hunter(newPos1,newPos2,newR,random(20,255),random(20,255),random(20,255))); 
             } else {
+                fill(255);
+                textSize(30);
+                text("Thomaz is bad",width/2,height/2);
                 noLoop();
             }
         }
