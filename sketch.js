@@ -24,7 +24,7 @@ var newPos2;
 var newR;
 
 function setup() {
-    createCanvas(windowWidth,windowHeight); 
+    createCanvas(windowWidth-10,windowHeight-10); 
     for(var i = 0; i < numCircles; i++){
         hunters.push(new Hunter(random(20,width-20),random(20,height-20),random(currentR-2,currentR*5),random(20,220),random(20,220),random(20,220)));
     }
@@ -55,6 +55,14 @@ function draw() {
     
     if(mouseY > height-currentR){
         mouseY = height-currentR;
+    }
+    
+    if(mouseX < currentR){
+        mouseX = currentR;    
+    }
+    
+    if(mouseY < currentR){
+        mouseY = currentR;
     }
     textSize(15);
     fill(255);
@@ -103,9 +111,6 @@ function draw() {
                 }
                 hunters.push(new Hunter(newPos1,newPos2,newR,random(20,255),random(20,255),random(20,255))); 
             } else {
-                fill(255);
-                textSize(30);
-                text("Thomaz is bad",width/2,height/2);
                 noLoop();
             }
         }
