@@ -1,29 +1,23 @@
-var Hunter = function(x,y,r,c1,c2,c3){
-    this.position = createVector(x,y);
-    this.velocity = createVector(0,0);
-    this.acceleration = createVector(0,0);
-    this.r = r;
-    this.c = [c1,c2,c3];
-};
+var Snake = function(){
+    this.x = round(width/2/scl);
+    this.y = round(height/2/scl);
+    this.history = [];
+    this.length = 0;
+    this.dir = [0,1];
+}
 
-Hunter.prototype.update = function(){
-    this.velocity.add(this.acceleration);
-    this.position.add(this.velocity);    
-    this.acceleration.set(0,0);
-};
-
-Hunter.prototype.display = function(){
-    fill(this.c[0],this.c[1],this.c[2]);
-    ellipse(this.position.x,this.position.y,this.r*2,this.r*2);    
-    if(showNums === true){
-        fill(255);
-        textSize(this.r);
-        text(round(this.r),this.position.x-this.r/2,this.position.y+this.r/2);
+Snake.prototype.display = function(){
+    this.length = round(this.length);
+    fill(255,0,0,200);
+    rect(this.x*scl,this.y*scl,scl,scl);
+    for(var i = this.history.length-1; i >= this.history.length-this.length; i--){
+        rect(this.history[i][0]*scl,this.history[i][1]*scl,scl,scl);
     }
-};
+}
 
-Hunter.prototype.applyForce = function(f){
-    var force = p5.Vector.div(f,PI * sq(this.r));
-    force.mult(0.001);
-    this.acceleration.add(force);
-};
+Snake.prototype.update = function(){
+    this.length = round(this.length);
+    this.history.push([this.x,this.y]);
+    this.x += this.dir[0];
+    this.y += this.dir[1];
+}
