@@ -77,4 +77,5 @@ function draw() {
     text("Multiplier: " + pm, width-100,height-40)
     text("Andre Monteiro",20,height-40)
     text("Period 3",20,height-20)
+    text("Score: " + (snake.length+1), width/2 - 20,height-10)
 }
