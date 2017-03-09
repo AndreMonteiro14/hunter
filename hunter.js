@@ -15,6 +15,10 @@ Snake.prototype.display = function(){
     }
 }
 
+var bepsis = function(n){
+    return sq(n);
+}
+
 Snake.prototype.update = function(){
     this.length = round(this.length);
     this.history.push([this.x,this.y]);
