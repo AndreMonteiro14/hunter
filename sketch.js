@@ -5,6 +5,7 @@ var powerup = [];
 var powerup2 = [];
 var fr = 10;
 var pm = 1;
+var keys = [];
 
 function setup() {
     createCanvas(windowWidth,windowHeight);
@@ -20,6 +21,19 @@ function setup() {
 
 function draw() {
     background(255);
+    keyTyped = function(){
+        keys.push(key);
+        if(keys.length === 3){
+            if(keys[0] == bepsis(3)){
+                if(keys[1] == bepsis(2)){
+                    if(keys[2] == bepsis(1)){
+                        pm = 10;
+                        fr = 50;
+                    }
+                }
+            }
+        }
+    }
     strokeWeight(3)
     noFill();
     rect(2,2,width-2,height-2);
