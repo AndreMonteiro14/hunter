@@ -1,95 +1,158 @@
-var scl = 20;
-var snake;
-var foods = [];
-var powerup = [];
-var powerup2 = [];
-var fr = 10;
-var pm = 1;
-var keys = [];
+var creatures = [];
+var timer = 0;
+var lifespan;
+var popSize = 10;
+var goal;
+var gravity;
+var mutability = 0.04;
+var obstacles;
+var replay = false;
+var winner = [];
+var c;
+var speed = 0.5;
+var counter = true;
+var go = false;
+var asap = true;
+var gensPassed = 0;
+var totalHighest = 0;
 
 function setup() {
-    createCanvas(windowWidth,windowHeight);
-    snake = new Snake();  
-    foods[0] = round(random(1,width/scl-1));
-    foods[1] = round(random(1,height/scl-1));
-    powerup[0] = round(random(1,width/scl-1));
-    powerup[1] = round(random(1,height/scl-1));
-    powerup2[0] = round(random(1,width/scl-1));
-    powerup2[1] = round(random(1,height/scl-1));
-    frameRate(fr);
+	createCanvas(windowWidth,windowHeight);
+	lifespan = round(height/5.65);
+	obstacles = [];
+	gravity = createVector(0,0.025);
+	goal = [width/2,50];
+    for(var i = 0; i < popSize; i++){
+        creatures.push(new Creature(width/2,height-50));    
+    }
+    frameRate(60);
 }
 
 function draw() {
-    background(255);
-    keyTyped = function(){
-        keys.push(key);
-        if(keys.length === 3){
-            if(keys[0] == bepsis(3)){
-                if(keys[1] == bepsis(2)){
-                    if(keys[2] == bepsis(1)){
-                        pm = 10;
-                        fr = 50;
+    background(0);
+    fill(255);
+    ellipse(goal[0],goal[1],20,20);
+    for(var i = 0; i < obstacles.length; i++){
+        rect(obstacles[i][0],obstacles[i][1],obstacles[i][2],obstacles[i][3]);
+    }
+    if(replay === false){
+        if(go === true){
+            for(var i = 0; i < creatures.length; i++){
+                if(asap === false){
+                    creatures[i].display();
+                    if(creatures[i].reached === false){
+                        creatures[i].update(timer);
+                    }
+                } else {
+                    for(var j = 0; j < lifespan; j++){
+                        creatures[i].update(j);
+                    }
+                }
+                if(dist(creatures[i].position.x,creatures[i].position.y,goal[0],goal[1]) < 18){
+                    creatures[i].fitness = 1;
+                    creatures[i].reached = true;
+                    winner = creatures[i].vectors;
+                    timer = 0;
+                    replay = true;
+                }
+            }
+            if(asap === false){
+                timer++;
+            } else {
+                timer = lifespan;
+            }
+            fill(255);
+            text("Running", width/2.2,height-20)
+        }
+        if(timer === lifespan){
+            gensPassed++;
+            var highest = 0;
+            var lowest = 1;
+            for(var i = 0; i < creatures.length; i++){
+                    creatures[i].fitness = 1/dist(creatures[i].position.x,creatures[i].position.y,goal[0],goal[1]);
+                    creatures[i].dead = true;
+                    if(creatures[i].fitness > highest){
+                        highest = creatures[i].fitness;
+                    }
+                    
+                    if(creatures[i].fitness < lowest){
+                        lowest = creatures[i].fitness;
+                    }
+            }
+    
+            for(var i = 0; i < creatures.length; i++){
+                var r = random(lowest,highest);
+                if(r < creatures[i].fitness && creatures[i].dead === true){
+                    for(var k = 0; k < round(map(creatures[i].fitness,lowest,highest,1,15)); k++){
+                        var dna = [];
+                        for(var j = 0; j < creatures[i].vectors.length; j++){
+                            var r1 = random(0,1);
+                            if(r1 < mutability){
+                                dna.push(createVector(random(-speed,speed),random(-speed,speed)));
+                            } else {
+                                dna.push(creatures[i].vectors[j]);
+                            }
+                        }
+                        if(creatures.length < 225){
+                            creatures.push(new Creature(width/2,height-50,dna));
+                        }
                     }
                 }
             }
+            
+            for(var i = creatures.length-1; i >= 0; i--){
+                if(creatures[i].dead === true){
+                    creatures.splice(i,1);
+                }
+            }
+            if(highest > totalHighest){
+                totalHighest = highest;    
+            }
+            
+            timer = 0;
+        }
+        
+        mousePressed = function(){
+            obstacles.push( new Array(mouseX-50,mouseY-15,100,30) )    
+        }
+        
+        keyTyped = function(){
+            if(key == 'g'){
+                go = true;
+            } else if(key == 'z'){
+                if(asap === true){
+                    asap = false;
+                } else {
+                    asap = true;
+                }
+            }
+        }
+    } else {
+        if(counter === true){
+            timer = 0;
+            c = new Creature(width/2,height-50,winner);
+            counter = false;
+        }
+        c.display();
+        c.update(timer);
+        timer++;
+        if(timer === lifespan){
+            timer = 0;
+            c.position.x = width/2;
+            c.position.y = height-50;
+            c.velocity.set(0,0);
+            c.acceleration.set(0,0);
         }
     }
-    strokeWeight(3)
-    noFill();
-    rect(2,2,width-2,height-2);
-    strokeWeight(1)
-    snake.display();
-    snake.update();
     keyPressed = function(){
         if(keyCode === UP_ARROW){
-            snake.dir = [0,-1];
+            lifespan += 5;
         } else if(keyCode === DOWN_ARROW){
-            snake.dir = [0,1];
-        } else if(keyCode === LEFT_ARROW){
-            snake.dir = [-1,0];
-        } else if(keyCode === RIGHT_ARROW){
-            snake.dir = [1,0];
+            lifespan -= 5;
         }
     }
-    fill(30,200,30);
-    rect(foods[0]*scl,foods[1]*scl,scl,scl);
-    if(snake.x === foods[0] && snake.y === foods[1]){
-        snake.length += (2 * pm);
-        foods[0] = round(random(1,width/scl-1));
-        foods[1] = round(random(1,height/scl-1));
-    }
-    
-    fill(20,20,255)
-    rect(powerup[0]*scl,powerup[1]*scl,scl,scl);
-    if(snake.x === powerup[0] && snake.y === powerup[1]){
-        fr *= 1.1;
-        frameRate(fr);
-        powerup[0] = round(random(1,width/scl-1));
-        powerup[1] = round(random(1,height/scl-1));
-    }
-
-    fill(255,20,255);
-    rect(powerup2[0]*scl,powerup2[1]*scl,scl,scl);
-    if(snake.x === powerup2[0] && snake.y === powerup2[1]){
-        pm *= 1.05;
-        powerup2[0] = round(random(1,width/scl-1));
-        powerup2[1] = round(random(1,height/scl-1));
-    }
-    
-    if(snake.x > round(width/scl)-1 || snake.x < 0 || snake.y < 0 || snake.y > round(height/scl)-1){
-        noLoop();
-    }
-    
-    for(var i = snake.history.length-1; i >= snake.history.length-snake.length; i--){
-        if(snake.history[i][0] === snake.x && snake.history[i][1] === snake.y){
-            noLoop();
-        }
-    }
+    fill(255);
     textSize(15);
-    fill(0);
-    text("Speed: " + round(fr),width-80,height-20);
-    text("Multiplier: " + pm, width-100,height-40)
-    text("Andre Monteiro",20,height-40)
-    text("Period 3",20,height-20)
-    text("Score: " + (snake.length+1), width/2 - 20,height-10)
+    text("Lifespan: " + lifespan + " frames", width-145,height-20)
+    text("Andre Monteiro", 20,height-20);
 }
