@@ -1,27 +1,50 @@
-var Snake = function(){
-    this.x = round(width/2/scl);
-    this.y = round(height/2/scl);
-    this.history = [];
-    this.length = 0;
-    this.dir = [0,1];
-}
-
-Snake.prototype.display = function(){
-    this.length = round(this.length);
-    fill(255,0,0,200);
-    rect(this.x*scl,this.y*scl,scl,scl);
-    for(var i = this.history.length-1; i >= this.history.length-this.length; i--){
-        rect(this.history[i][0]*scl,this.history[i][1]*scl,scl,scl);
+var Creature = function(x,y,vectors){
+    this.position = createVector(x,y);
+    this.velocity = createVector(0,0);
+    this.acceleration = createVector(0,0);
+    this.fitness;
+    this.dead = false;
+    this.reached = false;
+    if(vectors === undefined){
+        this.vectors = [];
+        for(var i = 0; i < lifespan; i++){
+            var v = createVector(random(-speed,speed),random(-speed,speed))
+            this.vectors.push(v);
+        }
+    } else {
+        this.vectors = vectors;
     }
+};
+
+Creature.prototype.display = function(){
+    fill(255,20,20,150);
+    ellipse(this.position.x,this.position.y,20,20);
 }
 
-var bepsis = function(n){
-    return sq(n);
-}
+Creature.prototype.update = function(counting){
+    this.acceleration.add(this.vectors[counting]);
+    this.acceleration.add(gravity);
+    if(this.position.y > height-10){
+        this.velocity.y *= -1;
+    }
 
-Snake.prototype.update = function(){
-    this.length = round(this.length);
-    this.history.push([this.x,this.y]);
-    this.x += this.dir[0];
-    this.y += this.dir[1];
+    if(this.position.x < 10 || this.position.x > width-10){
+        this.velocity.x *= -1;
+    }
+    if(this.position.y > height-11){
+        this.position.y = height-11;    
+    }
+    for(var i = 0; i < obstacles.length; i++){
+        if(this.position.y-10 < obstacles[i][1]+obstacles[i][3] && this.position.x + 10 > obstacles[i][0] && this.position.x-10 < obstacles[i][0] + obstacles[i][2] && this.position.y+10 > obstacles[i][1]){
+            this.velocity.y *= -1.01;    
+        }
+        
+        
+        if(this.position.x-10 < obstacles[i][0]+obstacles[i][2] && this.position.y + 10 > obstacles[i][1] && this.position.y-10 < obstacles[i][1] + obstacles[i][3]  && this.position.x+10 > obstacles[i][0]){
+            this.velocity.x *= -1.01;
+        }
+    }
+    this.velocity.add(this.acceleration);
+    this.position.add(this.velocity);
+    this.acceleration.set(0,0);
 }
