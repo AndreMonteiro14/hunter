@@ -19,7 +19,7 @@ var totalHighest = 0;
 function setup() {
 	createCanvas(windowWidth,windowHeight);
 	lifespan = round(height/5.65);
-	obstacles = [];
+	obstacles = [[width/2,height/2,100,30]];
 	gravity = createVector(0,0.025);
 	goal = [width/2,50];
     for(var i = 0; i < popSize; i++){
