@@ -12,7 +12,7 @@ var sum = [0,0,0,0,0];
 var r = 20;
 
 function setup() { 
-  createCanvas(600, 600);
+  createCanvas(windowWidth,windowHeight);
 	background(220);
 	
 	for(var i = 0; i < dataX.length; i++){
