@@ -3,10 +3,12 @@ var frs = [];
 var currentFrame = 0;
 var thickness = 1;
 var playMode = false;
+var layers = [];
 
 function setup() {
 	createCanvas(windowWidth,windowHeight);
 	frs.push(new Frame());
+	layers.push(new Layer(frs[0]));
 	for(var i = 50; i < 160; i++){
 		frameRate(i);
 	}
@@ -31,8 +33,12 @@ function draw() {
 		
 		keyPressed = function(){
 			if(keyCode === RIGHT_ARROW){
-				frs.push(new Frame());
+				if(currentFrame === frs.length-1){
+					frs.push(new Frame());
+				}
 				currentFrame += 1;
+			} else if(keyCode === LEFT_ARROW && currentFrame > 0){
+				currentFrame -= 1;
 			}
 		}
 		
@@ -40,7 +46,7 @@ function draw() {
 			if(key == "p"){
 				currentFrame = 0;
 				playMode = true;
-				frameRate(20);
+				frameRate(15);
 			}
 		}
 	}
