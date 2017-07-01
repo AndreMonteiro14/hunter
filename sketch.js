@@ -10,7 +10,7 @@ var eraserMode = false;
 function setup() {
 	createCanvas(windowWidth,windowHeight);
 	frs.push(new Frame());
-	layers.push(new Layer(frs[0]));
+	//layers.push(new Layer(frs[0]));
 	for(var i = 50; i < 160; i++){
 		frameRate(i);
 	}
