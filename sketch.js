@@ -4,16 +4,12 @@ var currentFrame = 0;
 var thickness = 1;
 var playMode = false;
 var layers = [];
-var fr = 20;
 var eraserMode = false;
 
 function setup() {
 	createCanvas(windowWidth,windowHeight);
 	frs.push(new Frame());
-	//layers.push(new Layer(frs[0]));
-	for(var i = 50; i < 160; i++){
-		frameRate(i);
-	}
+	layers.push(new Layer(frs[0]));
 }
 
 function draw() {
@@ -46,9 +42,9 @@ function draw() {
 		
 		keyTyped = function(){
 			if(key == "p"){
+				frameRate(20);
 				currentFrame = 0;
 				playMode = true;
-				frameRate(fr);
 			} else if(key == "="){
 				//fr += 5;
 				thickness += 1;
@@ -66,7 +62,7 @@ function draw() {
 	}
 	fill(0);
 	textSize(12);
-	text("Frame Rate: " + round(frameRate()),width-100,20);
+	//text("Frame Rate: " + round(frameRate()),width-100,20);
 	text("Frame " + (currentFrame+1) + "/" + frs.length,width-100,40);
 	text("Thickness: " + thickness,width-100,60);
 	textSize(15);
