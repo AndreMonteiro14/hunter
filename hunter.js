@@ -6,7 +6,20 @@ var Frame = function(){
 };
 
 Frame.prototype.edit = function(x,y){
-	this.canvas[ (x*height) + y] = 1;
+	// if(eraserMode === false){
+	// 	this.canvas[ (x*height) + y] = 1;
+	// } else {
+	// 	this.canvas[ (x*height) + y] = 0;
+	// }
+	for(var i = -1*(thickness-1); i <= (thickness-1); i++){
+		for(var j = -1*(thickness-1); j <= (thickness-1); j++){
+			if(eraserMode === false){
+				this.canvas[ ((x+i)*height) + (y+j)] = 1;
+			} else {
+				this.canvas[ ((x+i)*height) + (y+j)] = 0;
+			}
+		}
+	}
 }
 
 Frame.prototype.display = function(opacity){
