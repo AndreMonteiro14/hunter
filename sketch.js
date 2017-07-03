@@ -28,8 +28,13 @@ function draw() {
 			frs[currentFrame-1].display(0.75);
 		}
 		frs[currentFrame].display(0);
+		
+		mousePressed = function(){
+			frs[currentFrame].edit(mouseX,mouseY);	
+		}
+		
 		mouseDragged = function(){
-		  frs[currentFrame].edit(mouseX,mouseY);
+		  	frs[currentFrame].edit(mouseX,mouseY);
 		}
 		
 		keyPressed = function(){
