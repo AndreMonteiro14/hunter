@@ -10,7 +10,7 @@ var drawing = false;
 function setup() {
 	createCanvas(windowWidth,windowHeight);
 	frs.push(new Frame());
-	layers.push(new Layer(frs[0]));
+	//layers.push(new Layer(frs[0]));
 }
 
 function draw() {
